@@ -10,16 +10,16 @@ class Card extends Component {
         </View>
         <View style={styles.cardContainer}>
           <View style={styles.card}>
-            <Text style={{fontSize: 24}}>udacicards</Text>
-            <Text>{3} cards</Text>
+            <Text style={{ fontSize: 48 }}>udacicards</Text>
+            <Text style={{ fontSize: 24 }}>{3} cards</Text>
           </View>
           <View style={styles.card}>
-            <Text>udacicards</Text>
-            <Text>{3} cards</Text>
+            <Text style={{ fontSize: 48 }}>udacicards</Text>
+            <Text style={{ fontSize: 24 }}>{3} cards</Text>
           </View>
           <View style={styles.card}>
-            <Text>udacicards</Text>
-            <Text>{3} cards</Text>
+            <Text style={{ fontSize: 48 }}>udacicards</Text>
+            <Text style={{ fontSize: 24 }}>{3} cards</Text>
           </View>
         </View>
       </View>

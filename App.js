@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, StatusBar} from 'react-native';
 import {Constants} from 'expo'
 import Card from './components/Card'
+import CardDetail from './components/CardDetail'
 
 function UdaciStatusBar({backgroundColor,...props}) {
   return (
@@ -19,7 +20,7 @@ export default class App extends React.Component {
     return (
       <View style={{flex: 1}}>
         <UdaciStatusBar backgroundColor = {'#000' }barStyle = 'light-content'/>
-        <Card/>
+        <CardDetail/>
       </View>
     )
   }
