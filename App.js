@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, StatusBar} from 'react-native';
 import {Constants} from 'expo'
 import Card from './components/Card'
 import CardDetail from './components/CardDetail'
+import QuizDetail from './components/QuizDetail'
 
 function UdaciStatusBar({backgroundColor,...props}) {
   return (

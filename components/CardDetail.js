@@ -30,15 +30,15 @@ const styles = StyleSheet.create({
   addBtn: {
     borderRadius: 10,
     borderWidth: 2,
-    height: 40,
-    margin: 30,
+    height: 60,
+    margin: 25,
     marginBottom: 0
   },
   quizBtn: {
     backgroundColor: '#000',
     borderRadius: 10,
-    height: 40,
-    margin: 30,
+    height: 60,
+    margin: 25,
   },
   quizText: {
     color: '#fff',
