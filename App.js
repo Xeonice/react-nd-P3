@@ -4,6 +4,7 @@ import {Constants} from 'expo'
 import Card from './components/Card'
 import CardDetail from './components/CardDetail'
 import QuizDetail from './components/QuizDetail'
+import AddCardList from './components/AddCardList'
 
 function UdaciStatusBar({backgroundColor,...props}) {
   return (
@@ -21,7 +22,7 @@ export default class App extends React.Component {
     return (
       <View style={{flex: 1}}>
         <UdaciStatusBar backgroundColor = {'#000' }barStyle = 'light-content'/>
-        <CardDetail/>
+        <AddCardList/>
       </View>
     )
   }
