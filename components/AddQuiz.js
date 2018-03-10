@@ -14,6 +14,9 @@ class AddQuiz extends Component {
           this.setState({ text })
           console.log(this.state.text)
         }} />
+        <TouchableOpacity style={[styles.button, styles.buttonBlack]}>
+          <Text style={{color: '#fff', textAlign: 'center'}}>Submit</Text>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -31,6 +34,16 @@ const styles = StyleSheet.create({
     height: 40, 
     borderRadius: 10, 
     padding: 5,
+  },
+  button: {
+    marginTop: 30,
+    width: 200,
+    padding: 15,
+    borderColor: '#000',
+    borderRadius: 6,
+  },
+  buttonBlack: {
+    backgroundColor: '#000',
   },
 })
 
