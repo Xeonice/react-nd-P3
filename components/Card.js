@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native'
 
 class Card extends Component {
+  submitCheck = () => {
+    console.log("You tapped the button")
+  }
   render() {
     return(
       <View style={styles.container}>
@@ -9,18 +12,18 @@ class Card extends Component {
           <Text>DECKS</Text>
         </View>
         <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Text style={{ fontSize: 48 }}>udacicards</Text>
-            <Text style={{ fontSize: 24 }}>{3} cards</Text>
-          </View>
-          <View style={styles.card}>
-            <Text style={{ fontSize: 48 }}>udacicards</Text>
-            <Text style={{ fontSize: 24 }}>{3} cards</Text>
-          </View>
-          <View style={styles.card}>
-            <Text style={{ fontSize: 48 }}>udacicards</Text>
-            <Text style={{ fontSize: 24 }}>{3} cards</Text>
-          </View>
+          <TouchableOpacity style={styles.card} onPress={this.submitCheck}>
+            <Text style={styles.deckTitle}>udacicards</Text>
+            <Text style={styles.deckNum}>{3} cards</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.card} onPress={this.submitCheck}>
+            <Text style={styles.deckTitle}>udacicards</Text>
+            <Text style={styles.deckNum}>{3} cards</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.card} onPress={this.submitCheck}>
+            <Text style={styles.deckTitle}>udacicards</Text>
+            <Text style={styles.deckNum}>{3} cards</Text>
+          </TouchableOpacity>
         </View>
       </View>
     )
@@ -46,6 +49,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 50,
     borderBottomWidth: 1,
+  },
+  deckTitle: {
+    fontSize: 48
+  },
+  deckNum: {
+    fontSize: 24
   }
 });
 export default Card

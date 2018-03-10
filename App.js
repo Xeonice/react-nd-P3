@@ -23,7 +23,7 @@ export default class App extends React.Component {
     return (
       <View style={{flex: 1}}>
         <UdaciStatusBar backgroundColor = {'#000' }barStyle = 'light-content'/>
-        <AddQuiz />
+        <AddCardList />
       </View>
     )
   }
