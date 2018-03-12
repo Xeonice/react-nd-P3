@@ -4,6 +4,12 @@ import { NavigationActions } from 'react-navigation'
 import CardAdd from './CardAdd'
 
 class CardDetail extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      deck: {questions: []}
+    }
+  }
   submitCheck = () => {
     this.toHome()
   }

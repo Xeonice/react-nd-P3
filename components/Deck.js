@@ -1,28 +1,41 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, SectionList, } from 'react-native'
-
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, SectionList, ScrollView} from 'react-native'
+import { fetchData } from "../helper/api";
+import { formatQuestionsLength } from '../helper/helper'
 class Deck extends Component {
-  submitCheck = () => {
-    console.log("You tapped the button")
+  constructor(props) {
+    super(props);
+    this.state = {
+      myDecks: {}
+    }
+  }
+  componentDidMount() {
+    fetchData().then(results => {
+      this.setState(() => ({
+        myDecks: results
+      }))
+    })
+  }
+
+  navigateToItem(item) {
+    const { navigate } = this.props.navigation
+    return navigate('CardDetail', { item })
   }
   render() {
+    const { myDecks } = this.state
     return(
-      <View style={styles.container}>
-        <View style={styles.cardContainer}>
-          <TouchableOpacity style={styles.card} onPress={this.submitCheck}>
-            <Text style={styles.deckTitle}>udacicards</Text>
-            <Text style={styles.deckNum}>{3} cards</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={this.submitCheck}>
-            <Text style={styles.deckTitle}>udacicards</Text>
-            <Text style={styles.deckNum}>{3} cards</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.card} onPress={this.submitCheck}>
-            <Text style={styles.deckTitle}>udacicards</Text>
-            <Text style={styles.deckNum}>{3} cards</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      <ScrollView style={styles.container}>
+        {Object.keys(myDecks).map(item => {
+          return(
+            <View style={styles.cardContainer} key={myDecks[item].title}>
+                <TouchableOpacity style={styles.card} onPress={() => this.navigateToItem(myDecks[item].title)}>
+                <Text style={styles.deckTitle}>{myDecks[item].title}</Text>
+                <Text style={styles.deckNum}>{formatQuestionsLength(myDecks[item].questions.length)}</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        })}
+      </ScrollView>
     )
   }
 }
