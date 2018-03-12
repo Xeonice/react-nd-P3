@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
 import { getDeckItem } from '../helper/api';
 import { NavigationActions } from 'react-navigation';
+import { clearLocalNotification, setLocalNotification } from "../helper/notification";
 
 
 class Quiz extends Component {
@@ -40,11 +41,12 @@ class Quiz extends Component {
     }
     else{
       this.setState(() => ({endOfQuiz: true}))
+      clearLocalNotification().then(setLocalNotification)
     }
   };
 
   invertCardSide = toggleAnswer =>
-    this.setState(() => ({ toggleAnswer: !toggleAnswer }));
+    this.setState(() => ({ toggleAnswer: !toggleAnswer }))
   
   backToMainView = item => {
     const {navigate} = this.props.navigation
