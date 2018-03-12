@@ -1,36 +1,52 @@
 import React, {Component} from 'react'
 import { View, Text, TouchableOpacity, TextInput, Dimensions, StyleSheet } from 'react-native'
 import { NavigationActions, StackNavigator } from 'react-navigation'
+import { addNewCardToDeck } from '../helper/api'
 
-class AddQuiz extends Component {
-  state = {}
-  
-  submitCheck = () => {
-    const { navigation } = this.props;
-    const { deck } = navigation.state.params;
-    const { question, answer } = this.state;
-    const { store } = this.props;
-    
-    if (!question) {
-      Alert
-    }
-    this.toHome()
+class CardAdd extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      question: '',
+      answer: '',
+      title: '',
+    };
+  }  
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.item,
+  });
+
+  componentDidMount() {
+    this.setState(() => ({ title: this.props.navigation.state.params.item }))
   }
-  toHome = () => (
-    this.props.navigation.goback()
-  )
-  render() {
+
+  addNewCard = title => {
+    const content = {
+      question: this.state.question,
+      answer: this.state.answer
+    };
+    return addNewCardToDeck(title, content).then(() => 
+      this.returnToDeckItem(this.title, content))
+  }
+  returnToDeckItem = (item, content) => {
+    const { navigate, dispatch } = this.props.navigation
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'MainView' })]
+    });
+    dispatch(resetAction);
+    navigate('DeckItem', { item })
+  }
+  render() { 
     return (
       <View style={{flex: 1, alignItems: 'center'}}> 
-        <TextInput placeholder='Questions' style={styles.input} onChangeText={ (text) => {
-          this.setState({text})
-          console.log(this.state.text)
-        }}/>
-        <TextInput placeholder='Answer' style={styles.input} onChangeText={(text) => {
-          this.setState({ text })
-          console.log(this.state.text)
-        }} />
-        <TouchableOpacity style={[styles.button, styles.buttonBlack]} onPress={() => this.props.navigation.goBack()}>
+        <TextInput placeholder='Questions' style={styles.input} onChangeText={
+          question => this.setState({question})
+        }/>
+        <TextInput placeholder='Answer' style={styles.input} onChangeText={
+          answer => this.setState({answer})
+        }/>
+        <TouchableOpacity style={[styles.button, styles.buttonBlack]} onPress={() => this.addNewCard(this.props.navigation.state.params.item)}>
           <Text style={{color: '#fff', textAlign: 'center'}}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -64,4 +80,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AddQuiz
+export default CardAdd
