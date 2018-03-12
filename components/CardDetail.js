@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import CardAdd from './CardAdd'
+import { NavigationAction } from 'react-navigation';
+import { getDeckItem } from '../helper/api';
+import { formatQuestionsLength} from '../helper/helper'
 
 class CardDetail extends Component {
   constructor (props) {
@@ -10,24 +13,52 @@ class CardDetail extends Component {
       deck: {questions: []}
     }
   }
-  submitCheck = () => {
-    this.toHome()
+
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.item,
+  });
+
+  componentDidMount() {
+    getDeckItem(this.props.navigation.state.params.item)
+    .then(results => this.setState(() => ({ deck: results })))
   }
 
+  startQuiz = item =>  {
+    const { navigate } = this.props.navigation;
+    return navigate('Quiz', { item });
+  }
+
+  handleNavigationBackToItem = content => {
+    const newDeck = this.state.deck;
+    newDeck.questions.push(content);
+    this.setState(() => ({ deck: newDeck}));
+  }
+
+  addNewCard = item => {
+    const { navigate } = this.props.navigation
+    return navigate('CardAdd', {
+      item,
+      navBack: this.handleNavigationBackToItem,
+    })
+  }
+
+
+
   render() {
+    const { deck } = this.state
     return(
       <View style={styles.container}>
         <View style={styles.cardContainer}>
-          <Text style={styles.deckTitle}>udacicards</Text>
-          <Text style={styles.deckNum}>{3} cards</Text>
+          <Text style={styles.deckTitle}>{deck.title}</Text>
+          <Text style={styles.deckNum}>{formatQuestionsLength(deck.questions.length)}</Text>
         </View>
         <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.addBtn} onPress={this.submitCheck}>
+          <TouchableOpacity style={styles.addBtn} onPress={() => this.addNewCard(deck.title)}>
             <View style={styles.quizTextView}>
               <Text style={styles.addText}>Add Card</Text>
             </View>          
           </TouchableOpacity>
-          <TouchableOpacity style={styles.quizBtn} onPress={this.submitCheck}>
+          <TouchableOpacity style={styles.quizBtn} onPress={() => this.startQuiz(deck.title)}>
             <View style={styles.quizTextView}>
               <Text style={styles.quizText}>Start Quiz</Text>
             </View>
