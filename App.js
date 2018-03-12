@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, StatusBar, } from 'react-native';
 import {Constants} from 'expo'
+import { Ionicons } from '@expo/vector-icons';
 import Deck from './components/Deck'
 import DeckAdd from './components/DeckAdd'
 import CardDetail from './components/CardDetail'
@@ -16,15 +17,25 @@ const Tabs = TabNavigator({
     screen: Deck,
     navigationOptions: {
       tabBarLabel: 'Decks',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons name="ios-browsers-outline" size={28} color={tintColor} />
+      ),
     }
   },
   Add: {
     screen: DeckAdd,
     navigationOptions: {
       tabBarLabel: 'Add',
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons name="ios-create-outline" size={28} color={tintColor} />
+      ),
     }
   }
-  }, {
+  }, 
+  {
+    navigationOptions: {
+      header: null,//清除顶部Header导致的空白区域
+    },
     tabBarOptions: {
       activeTintColor: '#333',
       style: {

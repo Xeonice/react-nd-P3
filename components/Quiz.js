@@ -1,33 +1,118 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native'
+import { getDeckItem } from '../helper/api';
+import { NavigationActions } from 'react-navigation';
+
 
 class Quiz extends Component {
-  submitCheck = () => {
-    console.log("You tapped the button")
+  constructor(props) {
+    super(props);
+    this.state = {
+      deck: {
+        questions: [
+          {
+            question: '',
+            answer: '',
+          },
+        ],
+      },
+      toggleAnswer: false,
+      cardCurrentNumber: 0,
+      counter: 0,
+      endOfQuiz: false,
+    };
+  }
+
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.item,
+  });
+
+  componentDidMount() {
+    getDeckItem(this.props.navigation.state.params.item)
+      .then(results => this.setState(() => ({ deck: results })))
+  }
+
+  quizNextCard = (cardCurrentNumber, deck) => {
+    cardCurrentNumber++
+
+    if(cardCurrentNumber < deck.questions.length){
+      this.setState(() => ({cardCurrentNumber: cardCurrentNumber}))
+    }
+    else{
+      this.setState(() => ({endOfQuiz: true}))
+    }
+  };
+
+  invertCardSide = toggleAnswer =>
+    this.setState(() => ({ toggleAnswer: !toggleAnswer }));
+  
+  backToMainView = item => {
+    const {navigate} = this.props.navigation
+    return navigate('MainView')
+  }
+  restartQuiz = () => {
+    this.setState(() => ({
+      endOfQuiz: false,
+      counter: 0,
+      cardCurrentNumber: 0,
+    }))
+  }
+  incrementQuestionCounter = (cardCurrentNumber, deck) => {
+    this.setState(() => ({ counter: this.state.counter + 1}))
+    this.quizNextCard(cardCurrentNumber, deck)
   }
   render() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.textContainer}>
-          <Text style={styles.quizText}>Does React Native work with Android?</Text>
-          <TouchableOpacity onPress={this.submitCheck}>
-            <Text style={styles.answerBtn}>Answer</Text>
-          </TouchableOpacity>
+    const {
+      deck,
+      toggleAnswer,
+      cardCurrentNumber,
+      counter,
+      endOfQuiz
+    } = this.state;
+    return endOfQuiz ? (
+      <View style={{flex: 1}}>
+        <View>
+          <Text style={{ justifyContent: 'center' }}>Your scored {counter} / {deck.questions.length}</Text>
         </View>
-        <View style={styles.btnContainer}>
-          <TouchableOpacity style={styles.correctBtn} onPress={this.submitCheck}>
+        <View>
+          <TouchableOpacity style={styles.correctBtn} onPress={() => this.backToMainView(deck.title)}>
             <View style={styles.btnTextView}>
-              <Text style={styles.btnText}>Correct</Text>
+              <Text style={styles.btnText}>Back to My Decks</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.inCorrectBtn} onPress={this.submitCheck}>
+          <TouchableOpacity style={styles.correctBtn} onPress={() => this.restartQuiz()}>
             <View style={styles.btnTextView}>
-              <Text style={styles.btnText}>Incorrect</Text>
+              <Text style={styles.btnText}>Restart Quiz</Text>
             </View>
           </TouchableOpacity>
         </View>
       </View>
-    )
+    ) : (
+        <ScrollView style={styles.container}>
+          <View style={styles.textContainer}>
+            <Text>{`${cardCurrentNumber + 1} of ${deck.questions.length}`}</Text>
+            <Text style={styles.quizText}>{
+              toggleAnswer
+                ? deck.questions[cardCurrentNumber].answer
+                : deck.questions[cardCurrentNumber].question}</Text>
+            <TouchableOpacity onPress={() => this.invertCardSide(toggleAnswer)}>
+              <Text style={styles.answerBtn}>Answer</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.btnContainer}>
+            <TouchableOpacity style={styles.correctBtn} onPress={() => this.incrementQuestionCounter(cardCurrentNumber, deck)}>
+              <View style={styles.btnTextView}>
+                <Text style={styles.btnText}>Correct</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.inCorrectBtn} onPress={() => this.quizNextCard(cardCurrentNumber, deck)}>
+              <View style={styles.btnTextView}>
+                <Text style={styles.btnText}>Incorrect</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView >
+    );
   }
 }
 
