@@ -1,22 +1,43 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 'react-native'
+import { addNewDeckTitle } from '../helper/api';
+import { NavigationActions } from 'react-navigation'
 
 class DeckAdd extends Component {
-  state = {}
-  submitCheck = () => {
-    console.log("You tapped the button")
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputText: '',
+    };
+  }
+
+  createNewDeck = () => { 
+    return addNewDeckTitle(this.state.inputText).then(
+      this.navigateToDeckItem(this.state.inputText)
+    )
+  }
+
+  navigateToDeckItem = item => {
+    const { navigate, dispatch } = this.props.navigation;
+
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'MainView', params: { item }})
+      ]
+    })
+    dispatch(resetAction);
+    navigate('DeckItem', { item })
   }
   render(){
+    const {inputText} = this.state
     return (
       <View style={{flex: 1}}>
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ fontSize: 36, padding: 20, textAlign: 'center' }}>What is the title of your new deck?</Text>
-          <TextInput placeholder='Deck title' style={styles.input} onChangeText={(text) => {
-            this.setState({ text })
-            console.log(this.state.text)
-          }}/>
+          <TextInput placeholder='Deck title' style={styles.input} onChangeText={inputText => this.setState({ inputText })} value={inputText} />
         </View>        
-        <TouchableOpacity style={styles.quizBtn} onPress={this.props.navigation.navigate('AddCard')}>
+        <TouchableOpacity style={styles.quizBtn} onPress={this.createNewDeck}>
           <View style={styles.quizTextView}>
             <Text style={styles.quizText}>Submit</Text>
           </View>
