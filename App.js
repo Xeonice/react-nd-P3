@@ -1,11 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, View, StatusBar, Platform } from 'react-native';
+import {StyleSheet, Text, View, StatusBar, } from 'react-native';
 import {Constants} from 'expo'
-import Card from './components/Card'
+import Deck from './components/Deck'
+import DeckAdd from './components/DeckAdd'
 import CardDetail from './components/CardDetail'
-import QuizDetail from './components/QuizDetail'
-import AddCardList from './components/AddCardList'
-import AddQuiz from './components/AddQuiz'
+import Quiz from './components/Quiz'
+import CardAdd from './components/CardAdd'
 import {
   StackNavigator,
   TabNavigator,
@@ -13,23 +13,23 @@ import {
 
 const Tabs = TabNavigator({
   Main: {
-    screen: Card,
+    screen: Deck,
     navigationOptions: {
-      tabBarLabel: 'Card',
+      tabBarLabel: 'Decks',
     }
   },
   Add: {
-    screen: AddCardList,
+    screen: DeckAdd,
     navigationOptions: {
       tabBarLabel: 'Add',
     }
   }
-}, {
+  }, {
     tabBarOptions: {
-      activeTintColor: Platform.OS === 'ios' ? '#333' : '#fff',
+      activeTintColor: '#333',
       style: {
         height: 56,
-        backgroundColor: Platform.OS === 'ios' ? '#fff' : '#333',
+        backgroundColor: '#fff',
         shadowColor: 'rgba(0,0,0,0.24)',
         shadowOffset: {
           width: 0,
@@ -40,6 +40,24 @@ const Tabs = TabNavigator({
       }
     }
 })
+const MainNavigator = StackNavigator({
+  MainView: {
+    screen: Tabs,
+  },
+  Quiz: {
+    screen: Quiz,
+  },
+  DeckAdd: {
+    screen: DeckAdd,
+  },
+  CardDetail: {
+    screen: CardDetail,
+  },
+  CardAdd: {
+    screen: CardAdd
+  }
+
+});
 function UdaciStatusBar({backgroundColor,...props}) {
   return (
     <View
@@ -56,7 +74,7 @@ export default class App extends React.Component {
     return (
       <View style={{flex: 1}}>
         <UdaciStatusBar backgroundColor = {'#000' }barStyle = 'light-content'/>
-        <Tabs />
+        <MainNavigator />
       </View>
     )
   }

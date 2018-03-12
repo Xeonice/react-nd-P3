@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { NavigationActions } from 'react-navigation'
+import CardAdd from './CardAdd'
 
 class CardDetail extends Component {
   submitCheck = () => {
-    console.log("You tapped the button")
+    this.toHome()
   }
+
   render() {
     return(
       <View style={styles.container}>

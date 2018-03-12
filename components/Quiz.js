@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
-class QuizDetail extends Component {
+class Quiz extends Component {
   submitCheck = () => {
     console.log("You tapped the button")
   }
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default QuizDetail
+export default Quiz

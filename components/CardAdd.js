@@ -1,8 +1,24 @@
 import React, {Component} from 'react'
 import { View, Text, TouchableOpacity, TextInput, Dimensions, StyleSheet } from 'react-native'
+import { NavigationActions, StackNavigator } from 'react-navigation'
 
 class AddQuiz extends Component {
   state = {}
+  
+  submitCheck = () => {
+    const { navigation } = this.props;
+    const { deck } = navigation.state.params;
+    const { question, answer } = this.state;
+    const { store } = this.props;
+    
+    if (!question) {
+      Alert
+    }
+    this.toHome()
+  }
+  toHome = () => (
+    this.props.navigation.goback()
+  )
   render() {
     return (
       <View style={{flex: 1, alignItems: 'center'}}> 
@@ -14,13 +30,14 @@ class AddQuiz extends Component {
           this.setState({ text })
           console.log(this.state.text)
         }} />
-        <TouchableOpacity style={[styles.button, styles.buttonBlack]}>
+        <TouchableOpacity style={[styles.button, styles.buttonBlack]} onPress={() => this.props.navigation.goBack()}>
           <Text style={{color: '#fff', textAlign: 'center'}}>Submit</Text>
         </TouchableOpacity>
       </View>
     )
   }
 }
+
 const width = Dimensions.get('window').width
 const styles = StyleSheet.create({
   container: {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Dimensions } from 'react-native'
 
-class AddCardList extends Component {
+class DeckAdd extends Component {
   state = {}
   submitCheck = () => {
     console.log("You tapped the button")
@@ -16,7 +16,7 @@ class AddCardList extends Component {
             console.log(this.state.text)
           }}/>
         </View>        
-        <TouchableOpacity style={styles.quizBtn} onPress={this.submitCheck}>
+        <TouchableOpacity style={styles.quizBtn} onPress={this.props.navigation.navigate('AddCard')}>
           <View style={styles.quizTextView}>
             <Text style={styles.quizText}>Submit</Text>
           </View>
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AddCardList
+export default DeckAdd
